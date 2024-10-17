@@ -1,0 +1,33 @@
+/* Home Page - Media Queries */
+@media screen and (width <= 600px) {
+    
+    .url-container div form{
+        flex-direction: column;
+        border-radius: 0.5rem;
+        gap: 1rem;
+    }
+    
+    .url-container div form input{
+        border: 1px solid black !important;
+    }
+
+    .url-container div form input,
+    .url-container div form button{
+        border-radius: 0.5rem;
+    }
+}
+
+@media screen and (width <= 570px)
+{
+    .sub-heading {
+        font-size: 1.4rem;
+    }
+}
+
+@media screen and (width <= 390px)
+{
+    .sub-heading {
+        display: flex;
+        flex-direction: column;
+    }
+}
