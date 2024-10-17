@@ -42,14 +42,14 @@ function HomePage() {
 
                             {/* Table Body */}
                             <tbody>
-                                {/* <tr>
+                                <tr>
                                     <td>1</td>
                                     <td>John Doe</td>
                                     <td>johndoe@gmail.com</td>
-                                    <td>https://example.com/123234235245345346567547</td>
-                                    <td>http://localhost:8000/axedas</td>
+                                    <td>https://example.com/12323423524534534652222222222222222222222222222222222222222222222222222222222267547</td>
+                                    <td>http://localhost:8000/asdsedas</td>
                                     <td>0</td>
-                                </tr> */}
+                                </tr>
                                 
                             </tbody>
 
