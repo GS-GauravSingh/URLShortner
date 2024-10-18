@@ -5,11 +5,6 @@ import "../css/mediaQueries.css"
 function HomePage() {
     return (
         <>
-            <header>
-                <h1 className="heading">URL Shortner</h1>
-                <h3 className="tagline">Shorten it, share it, track it.</h3>
-            </header>
-
             <main>
 
                 {/* URL Container */}

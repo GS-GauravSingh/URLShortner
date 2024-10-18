@@ -1,0 +1,43 @@
+.account-credentials-form-wrapper{
+
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.account-credentials-form{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    min-width: min(400px, 90vw);
+}
+.account-credentials-form button{
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: var(--DEFUALT-FONT-COLOR);
+    color: white;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    border: none;
+    outline: none;
+    border-radius: 0.5rem;
+}
+.account-credentials-form > div{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.account-credentials-form > div > input{
+    height: 1.8rem;
+    text-indent: 0.5rem;
+}
+
+.account-credentials-form > div > label > span{
+    color: red;
+}

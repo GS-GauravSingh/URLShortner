@@ -1,0 +1,29 @@
+/* Home Page - Header Styles */
+header{
+    margin: 1rem 0;
+}
+
+.heading{
+    text-align: center;  
+    font-size: 2.5rem;
+    color: var(--DEFUALT-FONT-COLOR);
+
+    text-shadow: 0 0 1px black;
+}
+
+.sub-heading{
+    text-align: center;  
+    font-size: 1.5rem;
+    color: var(--DEFUALT-FONT-COLOR);
+
+    text-shadow: 0 0 1px black;
+}
+
+.tagline{
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--DEFUALT-FONT-COLOR);
+
+    text-shadow: 0 0 1px black;
+    letter-spacing: 1px;
+}
