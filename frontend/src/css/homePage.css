@@ -37,12 +37,17 @@
     border-bottom-left-radius: 0.5rem;
 }
 
+.url-container form input[type="url"]:disabled,
+.url-container form button:disabled{
+    cursor: no-drop;
+}
+
 .url-container form button
 {
     padding: 0 1rem;
     height: 2.5rem;
     font-size: 1rem;
-    background-color: var(--DEFUALT-FONT-COLOR);
+    background-color: var(--DEFAULT-FONT-COLOR);
     color: white;
 
     border: none;
@@ -78,13 +83,13 @@
 }
 
 .table-container > table > thead{
-    background-color: var(--DEFUALT-FONT-COLOR);
+    background-color: var(--DEFAULT-FONT-COLOR);
     color: white;
 }
 
 .table-container > table tfoot
 {
-    background-color: var(--DEFUALT-FONT-COLOR);
+    background-color: var(--DEFAULT-FONT-COLOR);
     color: white;
 }
 

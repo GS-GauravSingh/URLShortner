@@ -1,8 +1,59 @@
-// import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom"
+import { useUserAuthContext } from "../../context/userAuthContext.jsx"
+import axios from "axios"
 import "../css/homePage.css"
 import "../css/mediaQueries.css"
+import Popup from './Popup.jsx'
 
 function HomePage() {
+
+    const navigate = useNavigate();
+    const { user, setUser } = useUserAuthContext(null);
+    const { url, setUrl } = useUserAuthContext(null);
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [popupMessage, setPopupMessage] = useState("");
+
+    useEffect(() => {
+
+        // Function to check whether user is authenticated or not.
+        axios.get("http://127.0.0.1:8000/isuserauthenticated", { withCredentials: true })
+            .then((res) => {
+                
+                // User is Authenticated
+                if (res.data.authenticated === true) {
+                    setUser({
+                        authenticated: true,
+                        ...res.data.user
+                    });
+
+                    setIsPopupVisible(true);
+                    setPopupMessage(`Welcome, ${res.data.user.firstname} ${res.data.user.lastname}`)
+
+                    setTimeout(() => {
+                        setIsPopupVisible(false);
+                    }, 4000);
+                }
+                else {
+                    // User Not Authenticated.
+                    setUser({
+                        authenticated: false
+                    });
+
+                    setIsPopupVisible(true);
+                    setPopupMessage("User not authenticated, Please signin to continue")
+
+                    setTimeout(() => {
+                        setIsPopupVisible(false);
+                        navigate("/signin");
+                    }, 4000);
+                }
+            })
+            .catch((error) => {
+                console.error("Error checking authentication status:", error);
+            });
+    }, []);
+
     return (
         <>
             <main>
@@ -12,8 +63,8 @@ function HomePage() {
                     <div>
                         <h3 className="sub-heading"><span>From long to short -</span> <span>in just one click.</span></h3>
                         <form action="">
-                            <input type="url" name="url" id="inputURL" placeholder="Enter the link here" aria-label="Enter the link here" />
-                            <button type="submit">Shorten URL</button>
+                            <input type="url" name="url" id="inputURL" placeholder="Enter the link here" aria-label="Enter the link here" onChange={(event) => { setUrl(event.target.value) }} disabled={!user.authenticated} />
+                            <button type="submit" disabled={!user.authenticated}>Shorten URL</button>
                         </form>
 
                         <p>Turn long web addresses into short, easy-to-share links. Keep track of how many times your links are clicked to see what&apos;s popular!</p>
@@ -45,7 +96,7 @@ function HomePage() {
                                     <td>http://localhost:8000/asdsedas</td>
                                     <td>0</td>
                                 </tr>
-                                
+
                             </tbody>
 
                             {/* Table Footer */}
@@ -58,6 +109,11 @@ function HomePage() {
                         </table>
                     </div>
                 </div>
+
+                {/* Popup */}
+                {
+                    isPopupVisible && <Popup msg={popupMessage} />
+                }
             </main>
         </>
     )

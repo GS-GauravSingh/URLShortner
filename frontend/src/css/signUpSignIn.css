@@ -16,10 +16,10 @@
     border-radius: 0.5rem;
     min-width: min(400px, 90vw);
 }
-.account-credentials-form button{
-    margin-top: 1rem;
+.account-credentials-form button,
+.account-credentials-form .link{
     padding: 0.5rem;
-    background-color: var(--DEFUALT-FONT-COLOR);
+    background-color: var(--DEFAULT-FONT-COLOR);
     color: white;
     font-weight: 600;
     letter-spacing: 1px;
@@ -27,18 +27,60 @@
     border: none;
     outline: none;
     border-radius: 0.5rem;
+    cursor: pointer;
+
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.8rem;
 }
+
+.account-credentials-form button{
+    margin-top: 1rem;
+}
+
+.account-credentials-form button:hover,
+.account-credentials-form .link:hover{
+    opacity: 0.8;
+}
+
 .account-credentials-form > div{
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-.account-credentials-form > div > input{
+.account-credentials-form  div  input{
     height: 1.8rem;
     text-indent: 0.5rem;
 }
 
 .account-credentials-form > div > label > span{
     color: red;
+}
+
+.account-credentials-form > div > input:disabled,
+.account-credentials-form button:disabled{
+    cursor: no-drop;
+}
+
+.account-credentials-form .password-container div{
+    position: relative;
+}
+.account-credentials-form .password-container div input{
+    width: 100%;
+}
+
+.icon
+{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 1.4rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.show-icon{
+    font-size: 1.2rem;
 }

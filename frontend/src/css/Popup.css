@@ -1,0 +1,68 @@
+.popup{
+    position: absolute;
+    top: -4rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+
+    background-color: var(--DEFAULT-FONT-COLOR);
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    box-shadow: 0 0 2px black;
+    min-width: min(300px, 70vw);
+
+    opacity: 0;    
+    animation: move-to-bottom 200ms linear forwards, move-to-top 200ms linear forwards 3200ms;
+}
+
+.popup div{
+    text-align: center;
+    color: white;
+    padding: 0.5rem 1rem 1rem 1rem;
+}
+
+.popup span{
+    
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 4px;
+    width: 100%;
+    background-color: white;
+    border-radius: 0.5rem;
+
+    animation: line-wipe 3s linear 200ms forwards;
+}
+
+@keyframes line-wipe {
+    from
+    {
+        width: 100%;
+    }
+    to{
+        width: 0%;
+    }
+}
+
+@keyframes move-to-bottom {
+    from{
+        top: -4rem;
+        opacity: 0;
+    }
+    to{
+        top: 0rem;
+        opacity: 1;
+    }
+}
+
+@keyframes move-to-top {
+    from{
+        top: 0rem;
+        opacity: 1;
+    }
+    to{
+        top: -4rem;
+        opacity: 0;
+    }
+}
