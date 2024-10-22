@@ -27,7 +27,7 @@ function SignUp() {
             password: password
         };
 
-        axios.post("http://127.0.0.1:8000/signup", userData)
+        axios.post("http://127.0.0.1:8000/signup", userData, { withCredentials: true })
             .then((res) => {
                 // User Successfully Registered. Now, redirect the user to `sign-in` page.
                 if (res.status === 200) {

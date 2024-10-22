@@ -1,6 +1,8 @@
-import mongoose from "mongoose";
 import UserModel from "../Models/userModel.js";
-import { generateToken, verifyToken } from "../services/authService.js"
+import UrlModel from "../Models/urlModel.js";
+import { generateToken } from "../services/authService.js"
+import { nanoid } from "nanoid";
+import envVariables from "../environment_variables.js";
 
 // Home Route
 const handleHomeRoute = (req, res) => {
@@ -68,11 +70,16 @@ const handleSignIn = async (req, res) => {
             });
         }
 
-        const token = generateToken({
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email
-        });
+        // // If authentication is successful, store user data in `req` object
+        // req.user = {
+        //     _id: user._id,
+        //     firstname: user.firstname,
+        //     lastname: user.lastname,
+        //     email: user.email
+        // };
+
+
+        const token = generateToken(user);
 
         // setting cookie expiry data.
         // 7 days from now: Date.now() + days * hoursPerDay * minutesPerHour * secondsPerMinute * 1000.
@@ -100,7 +107,131 @@ const handleSignIn = async (req, res) => {
 };
 
 const handleIsUserAuthenticated = (req, res) => {
-    return res.json({ authenticated: true, user: req.user });
+    return res.json(
+        {
+            authenticated: true,
+            user:
+            {
+                firstname: req.user.firstname,
+                lastname: req.user.lastname,
+                email: req.user.email
+            }
+        }
+    );
 };
 
-export { handleHomeRoute, handleSignUp, handleSignIn, handleIsUserAuthenticated };
+
+// Function to generate short URL
+const handleShortenUrl = async (req, res) => {
+
+    const shortIDLength = envVariables.SHORT_ID_LENGTH;
+    const shortID = nanoid(shortIDLength);
+
+    const body = req.body;
+    if (!body.url) {
+        return res.status(400).json({
+            status: "failed",
+            message: "BAD REQUEST: URL is missing"
+        });
+    }
+
+    try {
+        
+        const results = await UrlModel.create({
+            shortID: shortID,
+            redirectURL: body.url,
+            generatedBy: req.user._id,
+            visitHistory: []
+        });
+
+        if (results) {
+            console.log("staticController.js: handleShortenUrl(): Short URL Generated Successfully");
+
+            return res.json({
+                status: "success",
+                message: "URL successfully shortened",
+                shortenUrl: `http://127.0.0.1:8000/${shortID}`,
+                originalUrl: body.url
+            });
+        }
+
+    } catch (error) {
+        console.log("ERROR: staticController.js: handleShortenUrl()");
+        return res.status(500).json({
+            errorMsg: "Internal Server Error"
+        });
+    }
+};
+
+// Function to redirect user.
+const handleRedirectUrl = async (req, res) => {
+    const id = req.params.id;
+    const date = new Date().toLocaleDateString("en-IN");
+
+    try {
+
+        const results = await UrlModel.findOneAndUpdate(
+            {
+                shortID: id
+            },
+            {
+                // The $push operator is used in MongoDB to add an element to an array field in a document. If the array does not exist, $push will create it.
+                $push: {
+                    visitHistory: {
+                        timestamp: date
+                    }
+                },
+            },
+            {
+                new: true // This option returns the modified document
+            }
+        );
+
+        
+        if(results)
+        {
+            return res.redirect(results.redirectURL);
+        }
+
+    } catch (error) {
+        console.log("ERROR: staticController.js: handleRedirectUrl()");
+        return res.status(500).json({
+            errorMsg: "Internal Server Error"
+        });
+    }
+};
+
+// Function to return all the url's generate by any particular user.
+const handleUrlAnalytics = async (req, res) => {
+
+
+    if (!req.user) {
+        // User is not authenticated that's whu `user` details is not present in the `req` object.
+        return res.status(401).json({
+            status: "failed",
+            message: "Unauthorized access. Please sign in to continue."
+        });
+    }
+    
+    try {
+
+        const results = await UrlModel.find({
+            generatedBy: req.user._id
+        }).select("-generatedBy -_id"); // Exclude the generatedBy field which contains the ID of the user.
+                
+
+        return res.json({
+            status: "success",
+            message: "URLs fetched successfully",
+            urls: results
+        });
+
+    } catch (error) {
+        console.log("ERROR: staticController.js: handleUrlAnalytics()");
+        return res.status(500).json({
+            errorMsg: "Internal Server Error"
+        });
+    }
+};
+
+export { handleHomeRoute, handleSignUp, handleSignIn, handleIsUserAuthenticated, handleShortenUrl, handleRedirectUrl, handleUrlAnalytics };

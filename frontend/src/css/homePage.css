@@ -113,7 +113,7 @@
 
 .table-container > table tbody tr td:nth-child(4){
     max-width: 350px; 
-    overflow-x: scroll; 
+    /* overflow-x: scroll;  */
 
     /* Hiding Scrollbar but it's still functional */
     /* -ms-overflow-style: none; 
