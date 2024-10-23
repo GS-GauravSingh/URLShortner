@@ -3,6 +3,7 @@ import UrlModel from "../Models/urlModel.js";
 import { generateToken } from "../services/authService.js"
 import { nanoid } from "nanoid";
 import envVariables from "../environment_variables.js";
+import mongoose from "mongoose";
 
 // Home Route
 const handleHomeRoute = (req, res) => {
@@ -110,6 +111,52 @@ const handleSignIn = async (req, res) => {
         });
     }
 };
+
+// Function to handle Sign-Out.
+const handleSignOut = (req, res) => {    
+    // deleting the JWT token on the client side.
+    return res.cookie("token", "", {
+        httpOnly: true, // Cookie is accessible only by the web server, Prevents client-side JavaScript from accessing the cookie.
+        expires: new Date(Date.now() + 1000), // Expires in 1 second
+        sameSite: "None", // Allows the cookie to be sent in cross-site requests
+        secure: true // only allow cookies to be sent over https and localhost (http) for development purpose.
+    }).json({
+        status: "success",
+        message: "User Successfully Signed Out",
+    });
+};
+
+// Function to delete user account.
+const handleDeleteUserAccount = async (req, res) => {
+    console.log(req.user);
+    try {
+
+        const user = await UserModel.deleteOne({
+            email: req.user.email,
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                status: "failed",
+                message: "Invalid Credentials: No user found with the provided email and password"
+            });
+        }
+
+        return res.json({
+            status: "success",
+            message: "User Account Successfully Deleted",
+        });
+
+
+    } catch (error) {
+        console.log("ERROR: staticController.js: handleDeleteUserAccount()");
+        return res.status(500).json({
+            errorMsg: "Internal Server Error"
+        });
+    }
+
+};
+
 
 const handleIsUserAuthenticated = (req, res) => {
     return res.json(
@@ -239,4 +286,4 @@ const handleUrlAnalytics = async (req, res) => {
     }
 };
 
-export { handleHomeRoute, handleSignUp, handleSignIn, handleIsUserAuthenticated, handleShortenUrl, handleRedirectUrl, handleUrlAnalytics };
+export { handleHomeRoute, handleSignUp, handleSignIn, handleSignOut, handleDeleteUserAccount, handleIsUserAuthenticated, handleShortenUrl, handleRedirectUrl, handleUrlAnalytics };
