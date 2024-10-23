@@ -5,6 +5,8 @@ import "../css/signUpSignIn.css"
 import Popup from "./Popup"
 import { GrHide } from "react-icons/gr";
 import { BiShow } from "react-icons/bi";
+import { useUserAuthContext } from "../context/userAuthContext"
+import { useUrlContext } from "../context/urlContext"
 
 function SignIn() {
 
@@ -13,7 +15,8 @@ function SignIn() {
     const [password, setPassword] = useState("");
     const [isPasswordVisible, setPasswordVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
-
+    const { setUser } = useUserAuthContext();
+    const { fetchUrlData } = useUrlContext();
 
     function handleSubmit(event) {
 
@@ -32,6 +35,11 @@ function SignIn() {
             .then((res) => {
                 // User Exists.
                 if (res.status === 200) {
+                    setUser({
+                        authStatus: true,
+                        ...res.data.user
+                    })
+                    fetchUrlData();
                     navigate("/");
                 }
             })

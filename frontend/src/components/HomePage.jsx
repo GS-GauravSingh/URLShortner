@@ -14,50 +14,25 @@ function HomePage() {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [popupMessage, setPopupMessage] = useState("");
 
-    const { user, setUser } = useUserAuthContext();
-    const { urlObj, loading, error, fetchUrlData } = useUrlContext();
-    
+    const { user } = useUserAuthContext();
+    const { urlObj, loading, fetchUrlData } = useUrlContext();
 
+    
+    
     useEffect(() => {
 
-        // Function to check whether user is authenticated or not.
-        axios.get("http://127.0.0.1:8000/isuserauthenticated", { withCredentials: true })
-            .then((res) => {
+        // In case when user is not authenticated.
+        if (user.authStatus === false) {
+            
+            setIsPopupVisible(true);
+            setPopupMessage("User not authenticated, Please signin to continue")
 
-                // User is Authenticated
-                if (res.data.authenticated === true) {
-                    setUser({
-                        authenticated: true,
-                        ...res.data.user
-                    });
-
-                    setIsPopupVisible(true);
-                    setPopupMessage(`Welcome, ${res.data.user.firstname} ${res.data.user.lastname}`);
-
-                    setTimeout(() => {
-                        setIsPopupVisible(false);
-                    }, 4000);
-                }
-
-            })
-            .catch((error) => {
-                console.error("Error checking authentication status:", error);
-                if (error.status === 401) {
-                    // User Not Authenticated.
-                    setUser({
-                        authenticated: false
-                    });
-
-                    setIsPopupVisible(true);
-                    setPopupMessage("User not authenticated, Please signin to continue")
-
-                    setTimeout(() => {
-                        setIsPopupVisible(false);
-                        navigate("/signin");
-                    }, 4000);
-                }
-            });
-    }, []);
+            setTimeout(() => {
+                setIsPopupVisible(false);
+                navigate("/signin");
+            }, 4000);
+        }
+    }, [user])
 
 
     function handleSubmit(event) {
@@ -68,14 +43,14 @@ function HomePage() {
         axios.post("http://127.0.0.1:8000/", { url: url }, { withCredentials: true })
             .then((res) => {
                 if (res.status === 200) {
-                    setIsPopupVisible(true);
-                    setPopupMessage(`URL Shortened Successfully`)
+                    // setIsPopupVisible(true);
+                    // setPopupMessage(`URL Shortened Successfully`)
                     fetchUrlData();
+                    navigate("/output")
 
-                    setTimeout(() => {
-                        setIsPopupVisible(false);
-                        navigate("/output")
-                    }, 4000);
+                    // setTimeout(() => {
+                    //     setIsPopupVisible(false);
+                    // }, 4000);
 
                 }
             })
@@ -83,7 +58,7 @@ function HomePage() {
                 console.log("ERROR : Homepage.jsx : handleSubmit() : ", err);
             })
     }
-    
+
     return (
         <>
             <main>
@@ -93,8 +68,8 @@ function HomePage() {
                     <div>
                         <h3 className="sub-heading"><span>From long to short -</span> <span>in just one click.</span></h3>
                         <form onSubmit={handleSubmit}>
-                            <input type="url" name="url" id="inputURL" placeholder="Enter the link here" aria-label="Enter the link here" onChange={(event) => { setUrl(event.target.value) }} disabled={!user.authenticated} />
-                            <button type="submit" disabled={!user.authenticated}>Shorten URL</button>
+                            <input type="url" name="url" id="inputURL" placeholder="Enter the link here" aria-label="Enter the link here" onChange={(event) => { setUrl(event.target.value) }} disabled={!user.authStatus} />
+                            <button type="submit" disabled={!user.authStatus}>Shorten URL</button>
                         </form>
 
                         <p>Turn long web addresses into short, easy-to-share links. Keep track of how many times your links are clicked to see what&apos;s popular!</p>
@@ -109,8 +84,8 @@ function HomePage() {
                             {/* Table Header */}
                             <thead>
                                 <th>S. No.</th>
-                                <th>Name</th>
-                                <th>Email</th>
+                                {/* <th>Name</th> */}
+                                {/* <th>Email</th> */}
                                 <th>URL</th>
                                 <th>Shorten URL</th>
                                 <th>Clicks</th>
@@ -124,7 +99,7 @@ function HomePage() {
                                     loading ?
                                         (
                                             <tr>
-                                                <td colSpan={6} style={{textAlign: "center"}}>No short urls generated</td>
+                                                <td colSpan={6} style={{ textAlign: "center" }}>No short urls generated</td>
                                             </tr>
                                         )
                                         :
@@ -133,8 +108,8 @@ function HomePage() {
                                             urlObj.map((obj, index) => (
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
-                                                    <td>{user.firstname} {user.lastname}</td>
-                                                    <td>{user.email}</td>
+                                                    {/* <td>{user.firstname} {user.lastname}</td> */}
+                                                    {/* <td>{user.email}</td> */}
                                                     <td>{obj.redirectURL}</td>
                                                     <td>http://127.0.0.1:8000/{obj.shortID}</td>
                                                     <td>{obj.visitHistory.length}</td>
@@ -149,18 +124,18 @@ function HomePage() {
                             {/* Table Footer */}
                             <tfoot>
                                 <tr>
-                                    <td colSpan={5}>Total Links Shorten</td>
-                                    
+                                    <td colSpan={3}>Total Links Shorten</td>
+
                                     {/* JavaScript */}
                                     {
                                         loading ?
-                                        (
-                                            <td>0</td>
-                                        )
-                                        :
-                                        (
-                                            <td>{urlObj.length}</td>
-                                        )
+                                            (
+                                                <td>0</td>
+                                            )
+                                            :
+                                            (
+                                                <td>{urlObj.length}</td>
+                                            )
                                     }
                                 </tr>
                             </tfoot>

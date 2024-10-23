@@ -5,15 +5,13 @@ import { useUrlContext } from "../context/urlContext"
 
 function OutputPage() {
 
-    const { urlObj } = useUrlContext();    
-    console.log(urlObj);
-    
+    const { urlObj } = useUrlContext();        
 
     return (
         <div className="output-container-wrapper">
 
             <div className="output-container">
-                <h3>Your Shortened URL</h3>
+                <h3 style={{cursor:"default"}}>Your Shortened URL</h3>
 
                 {/* Shortened URL */}
                 <p>http://127.0.0.1:8000/{urlObj[urlObj?.length - 1]?.shortID}</p>

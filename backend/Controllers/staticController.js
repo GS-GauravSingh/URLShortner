@@ -94,7 +94,12 @@ const handleSignIn = async (req, res) => {
             secure: true // only allow cookies to be sent over https and localhost (http) for development purpose.
         }).json({
             status: "success",
-            message: "User Present"
+            message: "User Present",
+            user: {
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email
+            }
         });
 
 
@@ -109,7 +114,7 @@ const handleSignIn = async (req, res) => {
 const handleIsUserAuthenticated = (req, res) => {
     return res.json(
         {
-            authenticated: true,
+            status: true,
             user:
             {
                 firstname: req.user.firstname,

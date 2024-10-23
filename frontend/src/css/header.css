@@ -1,6 +1,17 @@
 /* Home Page - Header Styles */
 header{
-    margin: 1rem 0;
+    margin: 0 0 1rem 0;
+    padding: 0 0 1rem 0;
+
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    box-shadow: 0 1px 5px var(--DEFAULT-FONT-COLOR);
+    cursor: default;
+
 }
 
 .heading{
@@ -26,4 +37,23 @@ header{
 
     text-shadow: 0 0 1px black;
     letter-spacing: 1px;
+}
+
+header div:last-child{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    background-color: var(--DEFAULT-FONT-COLOR);
+    width: 100%;
+    color: white;
+    padding: 0.5rem 0rem;
+    box-shadow: 0 1px 2px var(--DEFAULT-FONT-COLOR);
+}
+
+.user-icon{
+    font-size: 2rem;
+    color: white;
 }

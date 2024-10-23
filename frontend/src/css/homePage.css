@@ -1,4 +1,8 @@
 /* Main Container Styles Starts Here */
+main{
+    margin-bottom: 1rem;
+}
+
 .url-container{
     margin: 2rem 0rem;
     text-align: center;
@@ -15,10 +19,12 @@
 
 .url-container div h3{
     padding: 0 0 1rem 0;
+    cursor: default;
 }
 
 .url-container div p{
     padding: 1rem 0 0 0;
+    cursor: default;
 }
 
 .url-container div form{
@@ -76,8 +82,6 @@
 }
 
 .table-container > table{
-    /* border: 1px solid black; */
-    border-radius: 0.5rem;
     margin: 0 auto;
     cursor: default;
 }
@@ -105,13 +109,21 @@
     border-top-right-radius: 0.5rem;
 }
 
+.table-container > table tfoot td:first-child{
+    border-bottom-left-radius: 0.5rem;
+}
+
+.table-container > table tfoot td:last-child{
+    border-bottom-right-radius: 0.5rem;
+}
+
 .table-container > table th, 
 .table-container > table td
 {
     padding: 0.5rem 1rem;
 }
 
-.table-container > table tbody tr td:nth-child(4){
+.table-container > table tbody tr td:nth-child(2){
     max-width: 350px; 
     /* overflow-x: scroll;  */
 

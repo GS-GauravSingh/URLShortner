@@ -29,7 +29,7 @@ function UrlContextProvider({ children }) {
 
     useEffect(() => {
         fetchUrlData();
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []); // Empty dependency array means this useEffect() hook runs once on mount
 
     return (
         <UrlContext.Provider value={{ urlObj, loading, error, fetchUrlData }}>

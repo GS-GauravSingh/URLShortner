@@ -39,3 +39,8 @@
     text-align: center;
     text-decoration: none;
 }
+
+.output-container > button:hover,
+.output-container .link:hover{
+    opacity: 0.8;
+}

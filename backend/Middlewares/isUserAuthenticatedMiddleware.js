@@ -4,12 +4,12 @@ import { verifyToken } from "../services/authService.js";
 function isUserAuthenticatedMiddleware(req, res, next) {
     const token = req.cookies.token;
     if (!token) {
-        return res.status(401).json({ authenticated: false }); // No token, not authenticated
+        return res.status(401).json({ status: false }); // No token, not authenticated
     }
 
     const user = verifyToken(token);
     if (!user) {
-        return res.status(401).json({ authenticated: false }); // Invalid Token, not authenticated
+        return res.status(401).json({ status: false }); // Invalid Token, not authenticated
     }
 
     // Otherwise, User is authenticated.
